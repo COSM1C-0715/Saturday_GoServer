@@ -8,8 +8,8 @@ public class Character : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    protected virtual void Update()
+    // FixedUpdate is called once per physics frame
+    protected virtual void FixedUpdate()
     {
         
     }
