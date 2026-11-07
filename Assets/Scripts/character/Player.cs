@@ -15,11 +15,6 @@ public class Player : Character
         InputManager = GetComponent<InputControlManager>();
         CharaStatus = GetComponent<CharaStatus>();
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Start()
-    {
-        
-    }
 
     protected override void FixedUpdate()
     {
