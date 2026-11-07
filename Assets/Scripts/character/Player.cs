@@ -4,6 +4,7 @@ using static TimeUtility;
 public class Player : Character
 {
     Rigidbody Rb;
+
     InputControlManager InputManager;
 
     CharaStatus CharaStatus;

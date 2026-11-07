@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class InputControlManager : MonoBehaviour
 {
     //“ü—Í’l‚ÌŽæ“¾
+    [SerializeField]
     Vector2 InputVer;
 
     /// <summary>
