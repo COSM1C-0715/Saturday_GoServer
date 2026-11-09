@@ -23,7 +23,7 @@ public class AttackInput : MonoBehaviour
     }
     public void Attack()
     {
-        Vector3 spawnPos = _Player.transform.position;
+        Vector3 spawnPos = _Player.transform.position + _OffSet;
 
         GameObject obj = Instantiate(_BalletPrefab, spawnPos, Quaternion.identity);
 

@@ -27,9 +27,26 @@ public class Player : Character
         var move = CalculateMove(input);
 
         Rb.linearVelocity = move;
+
+        if(move != Vector3.zero)
+        {
+            transform.rotation = CalculateRotation(input);
+        }
     }
-    private Vector3 CalculateMove(Vector2 input)
+    Vector3 CalculateMove(Vector2 input)
     {
-        return new Vector3(input.x, 0, input.y) * CharaStatus.Speed * GameTime.FixedDeltaTime;
+        return new Vector3(input.x, 0, input.y) * CharaStatus._Speed * GameTime.FixedDeltaTime;
+    }
+
+    Quaternion CalculateRotation(Vector2 input)
+    {
+        //Vector3‚É•ÏŠ·
+        var dir = new Vector3(input.x, 0, input.y);
+
+        //Œˆ‚ß‚½‰ñ“]•ûŒü‚ðtargetRotation‚É‘ã“ü‚µ‚Ä‚¢‚é
+        var targetRotation = Quaternion.LookRotation(dir, Vector3.up);
+
+        //‰ñ“]
+        return Quaternion.Slerp(transform.rotation, targetRotation, CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
     }
 }

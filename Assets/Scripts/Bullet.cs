@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
 
     public void Attack(Vector3 direction)
     {
-         var move = direction.normalized * _Status.Speed * GameTime.FixedDeltaTime;
+         var move = direction.normalized * _Status._Speed * GameTime.FixedDeltaTime;
 
          _Rb.linearVelocity = move;
     }
