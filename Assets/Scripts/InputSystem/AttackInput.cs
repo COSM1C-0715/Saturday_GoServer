@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class AttackInput : MonoBehaviour
 {
+    [SerializeField]
+    Vector3 _OffSet = new Vector3(0.0f,0.0f,0.5f);
+
     Vector3 _AttackDir;
 
     Player _Player;
@@ -20,7 +23,9 @@ public class AttackInput : MonoBehaviour
     }
     public void Attack()
     {
-        GameObject obj = Instantiate(_BalletPrefab, _AttackDir, Quaternion.identity);
+        Vector3 spawnPos = _Player.transform.position;
+
+        GameObject obj = Instantiate(_BalletPrefab, spawnPos, Quaternion.identity);
 
         Bullet bullet = obj.GetComponent<Bullet>();
 

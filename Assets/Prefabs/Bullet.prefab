@@ -167,4 +167,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharaStatus
   MaxHp: 100
-  Speed: 5
+  Speed: 500
