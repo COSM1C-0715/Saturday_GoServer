@@ -3,9 +3,11 @@ using UnityEngine;
 public class AttackInput : MonoBehaviour
 {
     [SerializeField]
-    Vector3 _OffSet = new Vector3(0.0f,0.0f,0.5f);
+    Vector3 _OffSet;
 
-    Vector3 _AttackDir;
+    float _AttackAngle = 45;
+
+    int _SpawnIndex = 3;
 
     Player _Player;
 
@@ -19,16 +21,29 @@ public class AttackInput : MonoBehaviour
 
     void Start()
     {
-        _AttackDir = _Player.transform.forward;
+        
     }
     public void Attack()
     {
-        Vector3 spawnPos = _Player.transform.position + _OffSet;
+        for(int i = 0;i < _SpawnIndex;i++)
+        {
+            float angle = _AttackAngle * (i + 1);
 
-        GameObject obj = Instantiate(_BalletPrefab, spawnPos, Quaternion.identity);
+            Vector3 localpos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0.0f, Mathf.Sin(angle * Mathf.Deg2Rad));
 
-        Bullet bullet = obj.GetComponent<Bullet>();
+            Debug.Log(localpos);
 
-        bullet.Attack(_AttackDir);
+            Vector3 rotatedpos = _Player.transform.rotation * localpos;
+
+            Vector3 spawnpos = rotatedpos + _OffSet + _Player.transform.position;
+
+            Vector3 dir = Quaternion.Euler(0.0f,angle,0.0f) * _Player.transform.forward;
+
+            GameObject obj = Instantiate(_BalletPrefab,spawnpos,Quaternion.identity);
+
+            Bullet bullet = obj.GetComponent<Bullet>();
+
+            bullet.Attack(dir);
+        }
     }
 }
