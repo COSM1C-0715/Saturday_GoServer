@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class AttackInput : MonoBehaviour
 {
-    [SerializeField]
-    Vector3 _OffSet;
-
-    float _AttackAngle = 45;
+    const float ATTACK_ANGLE = 45;
 
     int _SpawnIndex = 3;
 
@@ -25,21 +22,26 @@ public class AttackInput : MonoBehaviour
     }
     public void Attack()
     {
-        for(int i = 0;i < _SpawnIndex;i++)
+        BulletShot(_Player, _SpawnIndex,ATTACK_ANGLE);
+    }
+
+    void BulletShot(Player player, int index,float attackAngle)
+    {
+        for (int i = 0; i < index; i++)
         {
-            float angle = _AttackAngle * (i + 1);
+            float angle = attackAngle * (i + 1);
 
-            Vector3 localpos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0.0f, Mathf.Sin(angle * Mathf.Deg2Rad));
+            Vector3 localPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0.0f, Mathf.Sin(angle * Mathf.Deg2Rad));
 
-            Vector3 rotatedpos = _Player.transform.rotation * localpos;
+            Vector3 rotatedPos =player.transform.rotation * localPos;
 
-            Vector3 spawnpos = rotatedpos + _OffSet + _Player.transform.position;
+            Vector3 spawnPos = rotatedPos + player.transform.forward + player.transform.position;
 
-            GameObject obj = Instantiate(_BalletPrefab,spawnpos,Quaternion.identity);
+            GameObject obj = Instantiate(_BalletPrefab, spawnPos, Quaternion.identity);
 
             Bullet bullet = obj.GetComponent<Bullet>();
 
-            bullet.Attack(rotatedpos);
+            bullet.Attack(rotatedPos);
         }
     }
 }
