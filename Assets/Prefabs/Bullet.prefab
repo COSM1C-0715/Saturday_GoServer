@@ -166,5 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d03b0a4a78199249bc339e9f4a8b837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharaStatus
-  MaxHp: 100
-  Speed: 500
+  _MaxHp: 100
+  _Speed: 500
+  _RotSpeed: 5
