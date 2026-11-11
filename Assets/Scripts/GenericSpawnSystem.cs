@@ -25,7 +25,11 @@ public class GenericSpawnSystem<T> where T : MonoBehaviour
     {
         if(_SpawnObj.Count > 0)
         {
-            _SpawnObj.Dequeue();
+            T obj = _SpawnObj.Dequeue();
+
+            obj.gameObject.SetActive(true);
+
+            return obj;
         }
         else
         {

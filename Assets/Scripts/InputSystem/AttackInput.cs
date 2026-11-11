@@ -8,9 +8,7 @@ public class AttackInput : MonoBehaviour
 
     Player _Player;
 
-    [SerializeField]
-    GameObject _BalletPrefab;
-
+    SpawnManagement _SpawnManagement;
     void Awake()
     {
         _Player = GetComponent<Player>();
@@ -18,14 +16,14 @@ public class AttackInput : MonoBehaviour
 
     void Start()
     {
-        
+        _SpawnManagement = GameObject.Find("SpawnGameObject").GetComponent<SpawnManagement>();
     }
     public void Attack()
     {
-        BulletShot(_Player, _SpawnIndex,ATTACK_ANGLE);
+
     }
 
-    void BulletShot(Player player, int index,float attackAngle)
+    void BulletShot(Player player, int index,float attackAngle,SpawnManagement spawmObj)
     {
         for (int i = 0; i < index; i++)
         {
@@ -37,9 +35,9 @@ public class AttackInput : MonoBehaviour
 
             Vector3 spawnPos = rotatedPos + player.transform.forward + player.transform.position;
 
-            GameObject obj = Instantiate(_BalletPrefab, spawnPos, Quaternion.identity);
+            Bullet bullet = spawmObj.Bullets.Get();
 
-            Bullet bullet = obj.GetComponent<Bullet>();
+            bullet.transform.position = spawnPos;
 
             bullet.Attack(rotatedPos);
         }
