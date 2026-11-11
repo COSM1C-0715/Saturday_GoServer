@@ -16,6 +16,11 @@ public class Bullet : MonoBehaviour
         _Status = GetComponent<CharaStatus>();
     }
 
+    void Start()
+    {
+        
+    }
+
     public void Attack(Vector3 direction)
     {
          var move = direction.normalized * _Status._Speed * GameTime.FixedDeltaTime;
