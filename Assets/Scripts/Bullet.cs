@@ -11,7 +11,11 @@ public class Bullet : MonoBehaviour
 
     const int DAMAGE = 1;
 
+    GameObject _Target;
+
     float _Dis;
+
+    Vector3 _SubDir;
 
     List<Enemy> _Enemies = new List<Enemy>();
 
@@ -41,11 +45,14 @@ public class Bullet : MonoBehaviour
 
         if(_Enemies.Count > 1)
         {
-            float dis = Vector3.Distance(transform.position, _Enemies[0].transform.position);
-
-            if(_Dis==0||dis<_Dis)
+            for(int i =0;i < _Enemies.Count;i++)
             {
+                Vector3 sub = (_Enemies[i].transform.position - transform.position);
 
+                if(_SubDir==Vector3.zero)
+                {
+
+                }
             }
         }
     }
