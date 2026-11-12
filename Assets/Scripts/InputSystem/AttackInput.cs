@@ -20,6 +20,6 @@ public class AttackInput : MonoBehaviour
     }
     public void Attack()
     {
-        StaticAttack<Bullet>.Attack(_Player,_SpawnIndex,ATTACK_ANGLE, _SpawnManagement.Bullets);
+        StartCoroutine(StaticAttack<Bullet>.AttackCoroutine(_Player, _SpawnIndex, ATTACK_ANGLE, _SpawnManagement.Bullets));
     }
 }

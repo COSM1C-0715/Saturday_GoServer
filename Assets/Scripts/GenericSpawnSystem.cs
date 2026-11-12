@@ -39,8 +39,6 @@ public class GenericSpawnSystem<T> where T : MonoBehaviour
 
             return obj;
         }
-
-        return null;
     }
 
     public void Return(T obj)
