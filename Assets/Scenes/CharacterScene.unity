@@ -574,7 +574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c518bd421ae75e548aabbb4c7bac5530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManagement
-  _BulletPrefab: {fileID: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,8 +907,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ecec8e7d648e242a7acbf14c9b9397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackInput
-  _OffSet: {x: 0, y: 0, z: 2}
-  _BalletPrefab: {fileID: 1128758332450472513, guid: 40b831b0711a8ab48a13b9ac42dbc8c9, type: 3}
 --- !u!1001 &5770189117505189712
 PrefabInstance:
   m_ObjectHideFlags: 0

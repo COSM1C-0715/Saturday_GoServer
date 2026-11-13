@@ -56,22 +56,25 @@ public class Bullet : MonoBehaviour
         {
             Vector3 targetDir = (closestEnemy.transform.position - transform.position).normalized;
 
-            int time = 1;
+            float dot = Vector3.Dot(targetDir,transform.forward);
 
-            for(int i = 0;i < _Duration;i++)
-            {
-                Vector3 cross = Vector3.Cross(targetDir,transform.forward);
+            if (dot > 1.0f) return;
 
-                float dot = Vector3.Dot(targetDir,transform.forward);
+            Vector3 cross = Vector3.Cross(transform.forward,targetDir);
 
-                float aCos = Mathf.Acos(dot);
+            float aCos = Mathf.Min(Mathf.Acos(dot),50.0f * Mathf.Deg2Rad);
 
-                Vector3 currentRot = transform.eulerAngles;
+            aCos *= (cross.y / Mathf.Abs(cross.y));
 
-                currentRot.y += -(cross.z/cross.z) * (aCos * (time / _Duration));
+            Vector3 angle = transform.eulerAngles;
 
-                transform.eulerAngles = currentRot;
-            }
+            angle.y += aCos * Mathf.Rad2Deg;
+
+            transform.eulerAngles = angle;
+
+            var move = transform.forward * _Status._Speed * GameTime.FixedDeltaTime;
+
+            _Rb.linearVelocity = move;
         }
     }
 
@@ -84,6 +87,8 @@ public class Bullet : MonoBehaviour
 
     public void Attack(Vector3 direction)
     {
+        transform.forward = direction.normalized;
+
          var move = direction.normalized * _Status._Speed * GameTime.FixedDeltaTime;
 
          _Rb.linearVelocity = move;
