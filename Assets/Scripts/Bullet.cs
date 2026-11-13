@@ -8,14 +8,12 @@ public class Bullet : MonoBehaviour
     Rigidbody _Rb;
 
     CharaStatus _Status;
+    
+    const int DAMAGE = 1;//ãÖÇ™ìñÇΩÇ¡ÇΩëŒè€Ç…â¡Ç¶ÇÈÉ_ÉÅÅ[ÉW
 
-    const int DAMAGE = 1;
+    int _Duration = 3;
 
-    GameObject _Target;
-
-    float _Dis;
-
-    Vector3 _SubDir;
+    Vector3 _CurrentDir;
 
     List<Enemy> _Enemies = new List<Enemy>();
 
@@ -31,28 +29,48 @@ public class Bullet : MonoBehaviour
         
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position,5.0f);
+
+        Enemy closestEnemy = null;
+
+        float minDistance = 100;
 
         for(int i = 0;i < colliders.Length;i++)
         {
             if (colliders[i].gameObject.TryGetComponent<Enemy>(out var enemy))
             {
-                _Enemies.Add(enemy);
+                float sqrDis = (enemy.transform.position - transform.position).sqrMagnitude;
+
+                if(sqrDis < minDistance)
+                {
+                    minDistance = sqrDis;
+
+                    closestEnemy = enemy;
+                }
             }
         }
 
-        if(_Enemies.Count > 1)
+        if(closestEnemy != null)
         {
-            for(int i =0;i < _Enemies.Count;i++)
+            Vector3 targetDir = (closestEnemy.transform.position - transform.position).normalized;
+
+            int time = 1;
+
+            for(int i = 0;i < _Duration;i++)
             {
-                Vector3 sub = (_Enemies[i].transform.position - transform.position);
+                Vector3 cross = Vector3.Cross(targetDir,transform.forward);
 
-                if(_SubDir==Vector3.zero)
-                {
+                float dot = Vector3.Dot(targetDir,transform.forward);
 
-                }
+                float aCos = Mathf.Acos(dot);
+
+                Vector3 currentRot = transform.eulerAngles;
+
+                currentRot.y += -(cross.z/cross.z) * (aCos * (time / _Duration));
+
+                transform.eulerAngles = currentRot;
             }
         }
     }
