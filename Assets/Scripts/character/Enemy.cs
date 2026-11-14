@@ -21,13 +21,13 @@ public class Enemy : Character,IDamage
 
     protected override void FixedUpdate()
     {
-        var move = MoveDir * Status.Speed * Time.fixedDeltaTime;
+        var move = MoveDir * Status._Speed * Time.fixedDeltaTime;
 
         Rb.linearVelocity = move;
     }
 
     public void TakeDamage(int amount)
     {
-        Status.MaxHp -= amount;
+        Status._MaxHp -= amount;
     }
 }
