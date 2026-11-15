@@ -4,26 +4,29 @@ using UnityEngine;
 /// </summary>
 public class UIManagement : MonoBehaviour
 {
-    [SerializeField]
     CharaStatusImage _Image;
 
-    [SerializeField]
     CharaStatusText _Text;
 
-    [SerializeField]
     Player _Player;
 
+    void Awake()
+    {
+        _Image = GameObject.Find("PlayerStatusUI").transform.GetChild(1).GetComponent<CharaStatusImage>();
+        _Text = GameObject.Find("PlayerStatusUI").transform.GetChild(2).GetComponent<CharaStatusText>();
+        _Player = GameObject.Find("Player").GetComponent<Player>();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _Player.UIEvent = PlayerUIUpdate;
-        PlayerUIUpdate();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(_Player!=null)
+        {
+            _Player.UIEvent = PlayerUIUpdate;
+        }
+        if(_Image!=null&&_Text!=null)
+        {
+            PlayerUIUpdate();
+        }        
     }
     /// <summary>
     /// PlayerÇÃHPÇÃUIÇÃçXêV

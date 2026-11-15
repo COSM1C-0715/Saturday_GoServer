@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using static TimeUtility;
 
@@ -10,15 +11,27 @@ public class Player : Character , IDamage
 
     InputControlManager _InputManager;
 
+    Vector3 _BackDir = new Vector3(0.0f,5.0f,-5.0f);
+
+    bool _IsBack = false;
+
+    Transform _Body;
+
     protected override void Awake()
     {
-        _Rb = GetComponent<Rigidbody>();
         _InputManager = GetComponent<InputControlManager>();
         _CharaStatus = GetComponent<CharaStatus>();
+        _Body = GameObject.Find("Player").transform.GetChild(0);
+        _Rb = _Body.GetComponent<Rigidbody>();
     }
 
+    protected override void Start()
+    {
+        _CurrentHp = _CharaStatus._MaxHp;
+    }
     protected override void FixedUpdate()
     {
+        if (_IsBack) return;
         Move(_InputManager.GetInputVer);
     }
 
@@ -27,11 +40,14 @@ public class Player : Character , IDamage
         //ˆÚ“®
         var move = CalculateMove(input);
 
-        _Rb.linearVelocity = move;
-
-        if(move != Vector3.zero)
+        if(_Rb != null)
         {
-            transform.rotation = CalculateRotation(input);
+            _Rb.linearVelocity = move;
+        }
+
+        if(move != Vector3.zero&& _Body != null)
+        {
+            _Body.rotation = CalculateRotation(input);
         }
     }
     Vector3 CalculateMove(Vector2 input)
@@ -48,12 +64,28 @@ public class Player : Character , IDamage
         var targetRotation = Quaternion.LookRotation(dir, Vector3.up);
 
         //‰ñ“]
-        return Quaternion.Slerp(transform.rotation, targetRotation, _CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
+        return Quaternion.Slerp(_Body.rotation, targetRotation, _CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
+    }
+
+    public void KnockBack()
+    {
+        StartCoroutine(BackCoroutine());
     }
 
     public void TakeDamage(int amount)
     {
         _CurrentHp -= amount;
         UIEvent?.Invoke();
+    }
+
+    IEnumerator BackCoroutine()
+    {
+        _IsBack = true;
+
+        _Rb.AddForce(_BackDir,ForceMode.Impulse);
+
+        yield return new WaitForSeconds(2f);
+
+        _IsBack = false;
     }
 }
