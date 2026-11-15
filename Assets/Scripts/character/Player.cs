@@ -1,24 +1,22 @@
 using UnityEngine;
 using static TimeUtility;
 
-public class Player : Character
+public class Player : Character , IDamage
 {
-    Rigidbody Rb;
+    Rigidbody _Rb;
 
-    InputControlManager InputManager;
+    InputControlManager _InputManager;
 
-    CharaStatus CharaStatus;
-
-    void Awake()
+    protected override void Awake()
     {
-        Rb = GetComponent<Rigidbody>();
-        InputManager = GetComponent<InputControlManager>();
-        CharaStatus = GetComponent<CharaStatus>();
+        _Rb = GetComponent<Rigidbody>();
+        _InputManager = GetComponent<InputControlManager>();
+        _CharaStatus = GetComponent<CharaStatus>();
     }
 
     protected override void FixedUpdate()
     {
-        Move(InputManager.GetInputVer);
+        Move(_InputManager.GetInputVer);
     }
 
     void Move(Vector2 input)
@@ -26,7 +24,7 @@ public class Player : Character
         //ˆÚ“®
         var move = CalculateMove(input);
 
-        Rb.linearVelocity = move;
+        _Rb.linearVelocity = move;
 
         if(move != Vector3.zero)
         {
@@ -35,7 +33,7 @@ public class Player : Character
     }
     Vector3 CalculateMove(Vector2 input)
     {
-        return new Vector3(input.x, 0, input.y) * CharaStatus._Speed * GameTime.FixedDeltaTime;
+        return new Vector3(input.x, 0, input.y) * _CharaStatus._Speed * GameTime.FixedDeltaTime;
     }
 
     Quaternion CalculateRotation(Vector2 input)
@@ -47,6 +45,11 @@ public class Player : Character
         var targetRotation = Quaternion.LookRotation(dir, Vector3.up);
 
         //‰ñ“]
-        return Quaternion.Slerp(transform.rotation, targetRotation, CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
+        return Quaternion.Slerp(transform.rotation, targetRotation, _CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
+    }
+
+    public void TakeDamage(int amount)
+    {
+        _CurrentHp -= amount;
     }
 }

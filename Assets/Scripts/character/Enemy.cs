@@ -2,32 +2,30 @@ using UnityEngine;
 
 public class Enemy : Character,IDamage
 {
-    Rigidbody Rb;
+    Rigidbody _Rb;
 
-    Vector3 MoveDir;
+    Vector3 _MoveDir;
 
-    CharaStatus Status;
-
-    private void Awake()
+    protected override void Awake()
     {
-        Rb = GetComponent<Rigidbody>();
+        _Rb = GetComponent<Rigidbody>();
 
-        Status = GetComponent<CharaStatus>();
+        _CharaStatus = GetComponent<CharaStatus>();
     }
     protected override void Start()
     {
-        MoveDir = new Vector3(0, 0, 1);
+        _MoveDir = new Vector3(0, 0, 1);
     }
 
     protected override void FixedUpdate()
     {
-        var move = MoveDir * Status._Speed * Time.fixedDeltaTime;
+        var move = _MoveDir * _CharaStatus._Speed * Time.fixedDeltaTime;
 
-        Rb.linearVelocity = move;
+        _Rb.linearVelocity = move;
     }
 
     public void TakeDamage(int amount)
     {
-        Status._MaxHp -= amount;
+        _CurrentHp -= amount;
     }
 }
