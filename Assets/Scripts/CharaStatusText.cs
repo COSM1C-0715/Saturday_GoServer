@@ -1,16 +1,23 @@
 using UnityEngine;
-using UnityEngine.UI;
-
-public class CharaStatusText : MonoBehaviour
+using TMPro;
+/// <summary>
+/// Plaeyrや敵などのHP表示の操作をするクラス
+/// </summary>
+public class CharaStatusText : MonoBehaviour 
 {
-    Text _Text;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    TextMeshProUGUI _Text;
+
+    void Awake()
     {
-        _Text = GetComponent<Text>();
+        _Text = GetComponent<TextMeshProUGUI>();
     }
-    public void NameText(string name)
+    /// <summary>
+    /// HP表示の更新
+    /// </summary>
+    /// <param name="currentHp">現在の体力</param>
+    /// <param name="maxHp">最大体力</param>
+    public void UpdateHpText(int currentHp, int maxHp)
     {
-        _Text.text = string.Format("{0}", name);
+        _Text.text = currentHp.ToString();
     }
 }
