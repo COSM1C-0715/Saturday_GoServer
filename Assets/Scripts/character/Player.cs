@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 using static TimeUtility;
 
 public class Player : Character , IDamage
 {
+    public Action UIEvent;
+
     Rigidbody _Rb;
 
     InputControlManager _InputManager;
@@ -51,5 +54,6 @@ public class Player : Character , IDamage
     public void TakeDamage(int amount)
     {
         _CurrentHp -= amount;
+        UIEvent?.Invoke();
     }
 }

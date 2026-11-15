@@ -1,7 +1,10 @@
 using UnityEngine;
+using System;
 
 public class Enemy : Character,IDamage
 {
+    public Action UIEvent;
+
     Rigidbody _Rb;
 
     Vector3 _MoveDir;

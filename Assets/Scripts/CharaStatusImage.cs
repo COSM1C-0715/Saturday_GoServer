@@ -1,21 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// Plaeyrや敵などのHPゲージの操作をするクラス
+/// </summary>
 public class CharaStatusImage : MonoBehaviour
 {
     Image _Image;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         _Image = GetComponent<Image>();
-        if(_Image!=null)
-        {
-            _Image.fillAmount = 1;
-        }
     }
-
-    public void UpdateHpGauge(int currentHp,int maxHp)
+    /// <summary>
+    /// HPの更新
+    /// </summary>
+    /// <param name="currentHp">現在の体力</param>
+    /// <param name="maxHp">最大体力</param>
+    public void UpdateHpGauge(int currentHp, int maxHp)
     {
-        _Image.fillAmount = currentHp / maxHp;
+        _Image.fillAmount = (float)currentHp / maxHp;
     }
 }
