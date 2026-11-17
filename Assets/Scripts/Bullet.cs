@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using static TimeUtility;
 
@@ -52,9 +51,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<IDamage>(out IDamage damage))
+        if(other.TryGetComponent<IDamage>(out var chara))
         {
-            damage.TakeDamage(DAMAGE);
+            //chara.TakeDamage(DAMAGE);
         }
     }
 }

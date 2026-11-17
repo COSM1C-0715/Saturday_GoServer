@@ -14,26 +14,26 @@ public class UIManagement : MonoBehaviour
     {
         _Image = GameObject.Find("PlayerStatusUI").transform.GetChild(1).GetComponent<CharaStatusImage>();
         _Text = GameObject.Find("PlayerStatusUI").transform.GetChild(2).GetComponent<CharaStatusText>();
-        _Player = GameObject.Find("Player").GetComponent<Player>();
+        _Player = GameObject.Find("Player").transform.GetChild(0).GetComponent<Player>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(_Player!=null)
+        if (_Player != null)
         {
             _Player.UIEvent = PlayerUIUpdate;
         }
-        if(_Image!=null&&_Text!=null)
+        if (_Image != null && _Text != null)
         {
-            PlayerUIUpdate();
-        }        
+            PlayerUIUpdate(_Player.CurrentHp,_Player.MaxHp);
+        }
     }
     /// <summary>
     /// PlayerÇÃHPÇÃUIÇÃçXêV
     /// </summary>
-    void PlayerUIUpdate()
+    void PlayerUIUpdate(float current,float max)
     {
-        _Image.UpdateHpGauge(_Player.CurrentHp,_Player.MaxHp);
-        _Text.UpdateHpText(_Player.CurrentHp, _Player.MaxHp);
+        _Image.UpdateHpGauge(current, max);
+        _Text.UpdateHpText(current, max);
     }
 }

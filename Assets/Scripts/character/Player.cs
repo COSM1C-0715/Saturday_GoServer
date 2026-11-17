@@ -3,33 +3,45 @@ using System.Collections;
 using UnityEngine;
 using static TimeUtility;
 
-public class Player : Character , IDamage
+public class Player : Character ,IDamage,IKnockBack
 {
-    public Action UIEvent;
+    public Action<float,float> UIEvent;
 
     Rigidbody _Rb;
 
     InputControlManager _InputManager;
 
-    Vector3 _BackDir = new Vector3(0.0f,5.0f,-5.0f);
-
-    bool _IsBack = false;
-
     Transform _Body;
+
+    [SerializeField]
+    float _knockBackSpeed = 5.0f;
+
+    public float CurrentHp
+    {
+        get => _CurrentHp;
+
+        set
+        {
+            _CurrentHp = Mathf.Clamp(value,0.0f,100.0f);
+
+            UIEvent?.Invoke(_CurrentHp,MaxHp);
+        }
+    }
+    bool _IsBack = false;
 
     protected override void Awake()
     {
         _InputManager = GetComponent<InputControlManager>();
         _CharaStatus = GetComponent<CharaStatus>();
         _Body = GameObject.Find("Player").transform.GetChild(0);
-        _Rb = _Body.GetComponent<Rigidbody>();
+        _Rb = GameObject.Find("Player").GetComponent<Rigidbody>();
     }
 
-    protected override void Start()
+    void Start()
     {
         _CurrentHp = _CharaStatus._MaxHp;
     }
-    protected override void FixedUpdate()
+    void FixedUpdate()
     {
         if (_IsBack) return;
         Move(_InputManager.GetInputVer);
@@ -67,22 +79,31 @@ public class Player : Character , IDamage
         return Quaternion.Slerp(_Body.rotation, targetRotation, _CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
     }
 
-    public void KnockBack()
+    public void KnockBack(Vector3 pos)
     {
-        StartCoroutine(BackCoroutine());
+        StartCoroutine(BackCoroutine(pos));
     }
 
-    public void TakeDamage(int amount)
-    {
-        _CurrentHp -= amount;
-        UIEvent?.Invoke();
-    }
-
-    IEnumerator BackCoroutine()
+    IEnumerator BackCoroutine(Vector3 fromPos)
     {
         _IsBack = true;
 
-        _Rb.AddForce(_BackDir,ForceMode.Impulse);
+        Debug.Log("É_ÉÅÅ[ÉWÇéÛÇØÇΩ");
+
+        Vector3 dir = transform.position - fromPos;
+
+        dir = dir.normalized;
+
+        dir.y = 1.0f;
+
+        Vector3 force = dir * _knockBackSpeed;
+
+        if(_Rb != null)
+        {
+            _Rb.linearVelocity = Vector3.zero;
+
+            _Rb.AddForce(force, ForceMode.Impulse);
+        }
 
         yield return new WaitForSeconds(2f);
 

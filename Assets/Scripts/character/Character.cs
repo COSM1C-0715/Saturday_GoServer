@@ -1,29 +1,31 @@
 using UnityEngine;
-[RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour
 {
     protected CharaStatus _CharaStatus;
 
-    protected int _CurrentHp;
+    protected float _CurrentHp;
 
-    public int CurrentHp => _CurrentHp;
+    protected const int DAMAGE = 10;
 
-    public int MaxHp => _CharaStatus._MaxHp;
+    public float MaxHp => _CharaStatus._MaxHp;
 
     protected virtual void Awake()
     {
         _CharaStatus = GetComponent<CharaStatus>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected virtual void Start()
+    protected void OnTriggerEnter(Collider other)
     {
-        
-    }
+        IKnockBack knockBack = other.GetComponentInParent<IKnockBack>();
 
-    // FixedUpdate is called once per physics frame
-    protected virtual void FixedUpdate()
-    {
-        
+        if(other.TryGetComponent<Player>(out var chara))
+        {
+            chara.CurrentHp -= DAMAGE;
+        }
+
+        if(knockBack != null)
+        {
+            knockBack.KnockBack(transform.position);
+        }
     }
 }

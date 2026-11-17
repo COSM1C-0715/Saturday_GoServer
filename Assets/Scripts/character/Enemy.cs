@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class Enemy : Character,IDamage
+public class Enemy : Character
 {
     public Action UIEvent;
 
@@ -9,24 +9,22 @@ public class Enemy : Character,IDamage
 
     const float SERCH_RANGE = 10;
 
-    const int DAMAGE = 10;
-
     Transform _Body;
 
     protected override void Awake()
     {
-        _Rb = GetComponent<Rigidbody>();
+        _Rb = GameObject.Find("Enemy").GetComponent<Rigidbody>();
 
         _CharaStatus = GetComponent<CharaStatus>();
 
-        _Body = GameObject.Find("Enemy").transform.GetChild(0);
+        _Body = transform.GetChild(0);
     }
-    protected override void Start()
+    void Start()
     {
         Move();
     }
 
-    protected override void FixedUpdate()
+    void FixedUpdate()
     {
         Move();
     }
@@ -44,14 +42,5 @@ public class Enemy : Character,IDamage
     public void TakeDamage(int amount)
     {
         _CurrentHp -= amount;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.TryGetComponent<Player>(out var chara))
-        {
-            chara.KnockBack();
-            chara.TakeDamage(DAMAGE);
-        }
     }
 }

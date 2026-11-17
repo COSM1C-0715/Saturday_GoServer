@@ -14,10 +14,10 @@ public class CharaStatusText : MonoBehaviour
     /// <summary>
     /// HP•\¦‚ÌXV
     /// </summary>
-    /// <param name="currentHp">Œ»İ‚Ì‘Ì—Í</param>
-    /// <param name="maxHp">Å‘å‘Ì—Í</param>
-    public void UpdateHpText(int currentHp, int maxHp)
+    /// <param name="current">Œ»İ‚Ì‘Ì—Í</param>
+    /// <param name="max">Å‘å‘Ì—Í</param>
+    public void UpdateHpText(float current, float max)
     {
-        _Text.text = currentHp.ToString();
+        _Text.text = string.Format("{1}/{2}",string.Empty,current,max);
     }
 }

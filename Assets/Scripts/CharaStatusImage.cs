@@ -15,8 +15,8 @@ public class CharaStatusImage : MonoBehaviour
     /// </summary>
     /// <param name="currentHp">Œ»İ‚Ì‘Ì—Í</param>
     /// <param name="maxHp">Å‘å‘Ì—Í</param>
-    public void UpdateHpGauge(int currentHp, int maxHp)
+    public void UpdateHpGauge(float currentHp, float maxHp)
     {
-        _Image.fillAmount = (float)currentHp / maxHp;
+        _Image.fillAmount = currentHp / maxHp;
     }
 }
