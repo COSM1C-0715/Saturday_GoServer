@@ -16,11 +16,13 @@ public class Character : MonoBehaviour
 
     protected void OnTriggerEnter(Collider other)
     {
-        IKnockBack knockBack = other.GetComponentInParent<IKnockBack>();
+        IDamage damage = other.GetComponent<IDamage>();
 
-        if(other.TryGetComponent<Player>(out var chara))
+        IKnockBack knockBack = other.GetComponent<IKnockBack>();
+
+        if(damage != null)
         {
-            chara.CurrentHp -= DAMAGE;
+            damage.CurrentHp -= DAMAGE;
         }
 
         if(knockBack != null)

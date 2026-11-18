@@ -1,9 +1,12 @@
 using UnityEngine;
+using System;
 using static TimeUtility;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
+    Action<Bullet> _Return;
+
     Rigidbody _Rb;
 
     CharaStatus _Status;
@@ -40,8 +43,10 @@ public class Bullet : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position,SERCH_RANGE);
     }
 
-    public void Attack(Vector3 direction)
+    public void Attack(Vector3 direction,Action<Bullet> poolReturn)
     {
+        _Return = poolReturn;
+
         transform.forward = direction.normalized;
 
          var move = direction.normalized * _Status._Speed * GameTime.FixedDeltaTime;
@@ -51,9 +56,13 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<IDamage>(out var chara))
+        IDamage damage = other.GetComponent<IDamage>();
+
+        if (damage != null)
         {
-            //chara.TakeDamage(DAMAGE);
+            damage.CurrentHp -= DAMAGE;
         }
+
+        _Return?.Invoke(this);
     }
 }

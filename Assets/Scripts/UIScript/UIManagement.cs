@@ -4,19 +4,20 @@ using UnityEngine;
 /// </summary>
 public class UIManagement : MonoBehaviour
 {
-    CharaStatusImage _Image;
+    CharaStatusImage[] _Image = new CharaStatusImage[2];
 
-    CharaStatusText _Text;
+    CharaStatusText _Text = null;
 
-    CharaStatusUIPos _UIPos;
+    CharaStatusUIPos _UIPos = null;
 
-    Player _Player;
+    Player _Player = null;
 
-    Enemy _Enemy;
+    Enemy _Enemy = null;
 
     void Awake()
     {
-        _Image = GameObject.Find("PlayerStatusUI").transform.GetChild(1).GetComponent<CharaStatusImage>();
+        _Image[0] = GameObject.Find("PlayerStatusUI").transform.GetChild(1).GetComponent<CharaStatusImage>();
+        _Image[1] = GameObject.Find("EnemyStatus").transform.GetChild(1).GetComponent<CharaStatusImage>();
         _Text = GameObject.Find("PlayerStatusUI").transform.GetChild(2).GetComponent<CharaStatusText>();
         _Player = GameObject.Find("Player").transform.GetChild(0).GetComponent<Player>();
         _Enemy = GameObject.Find("Enemy").GetComponent<Enemy>();
@@ -28,6 +29,10 @@ public class UIManagement : MonoBehaviour
         if (_Player != null)
         {
             _Player.UIEvent = UIUpdate<Player>;
+        }
+        if(_Enemy != null)
+        {
+            _Enemy.UIEvent = UIUpdate<Enemy>;
         }
         if (_Image != null && _Text != null)
         {
@@ -52,8 +57,12 @@ public class UIManagement : MonoBehaviour
     {
         if(typeof(T) == typeof(Player))
         {
-            _Image.UpdateHpGauge(current, max);
+            _Image[0].UpdateHpGauge(current, max);
             _Text.UpdateHpText(current, max);
+        }
+        else if(typeof(T) == typeof(Enemy))
+        {
+            _Image[1].UpdateHpGauge(current, max);
         }
     }
 }

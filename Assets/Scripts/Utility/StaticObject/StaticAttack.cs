@@ -36,6 +36,6 @@ public static class StaticAttack<T> where T : Bullet
 
         bullet.transform.position = spawnPos;
 
-        bullet.Attack(rotatedPos);
+        bullet.Attack(rotatedPos,(bullet) => spawmObj.Return((T) bullet));
     }
 }
