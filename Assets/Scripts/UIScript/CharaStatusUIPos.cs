@@ -10,6 +10,6 @@ public class CharaStatusUIPos : MonoBehaviour
     }
     public void UpdateRectTransform(Vector3 pos)
     {
-        
+        rect.position = Camera.main.WorldToScreenPoint(pos);
     }
 }
