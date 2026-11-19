@@ -14,6 +14,9 @@ public class UIManagement : MonoBehaviour
 
     Enemy _Enemy = null;
 
+    [SerializeField]
+    float _Distance = 1.0f;
+
     void Awake()
     {
         _Image[0] = GameObject.Find("PlayerStatusUI").transform.GetChild(1).GetComponent<CharaStatusImage>();
@@ -42,7 +45,18 @@ public class UIManagement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(_Enemy != null)
+        float distance = (_Player.transform.position - _Enemy.transform.position).sqrMagnitude;
+
+        if(distance < _Distance * _Distance)
+        {
+            _UIPos.UISetActive(true);
+        }
+        else
+        {
+            _UIPos.UISetActive(false);
+        }
+
+        if (_Enemy != null)
         {
             _UIPos.UpdateRectTransform(_Enemy.transform.position);
         }

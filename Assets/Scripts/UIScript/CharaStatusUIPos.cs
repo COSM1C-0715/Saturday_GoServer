@@ -11,10 +11,22 @@ public class CharaStatusUIPos : MonoBehaviour
     {
         rect = GetComponent<RectTransform>();
     }
+    /// <summary>
+    /// 敵のHPを表示させるUIが敵の上に来るように調整する関数
+    /// </summary>
+    /// <param name="pos">敵のポジション</param>
     public void UpdateRectTransform(Vector3 pos)
     {
         Vector3 uiPos = _OffSet + pos;
 
         rect.position = Camera.main.WorldToScreenPoint(uiPos);
+    }
+    /// <summary>
+    /// このクラスをつけているUIを表示・非表示させるためだけの関数
+    /// </summary>
+    /// <param name="active"></param>
+    public void UISetActive(bool active)
+    {
+        gameObject.SetActive(active);
     }
 }
