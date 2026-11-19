@@ -13,15 +13,18 @@ public class SpawnManagement : MonoBehaviour
 
     public GenericSpawnSystem<Bullet> Bullets => _Bullets;
 
+    [SerializeField]
+    int _SpawnCount = 0;
+
     void Awake()
     {
         _BulletPrefab = Resources.Load<Bullet>(PrefabName.BULLET);
-        _Bullets = new GenericSpawnSystem<Bullet> (_BulletPrefab,5);
+        _Bullets = new GenericSpawnSystem<Bullet> (_BulletPrefab,_SpawnCount);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

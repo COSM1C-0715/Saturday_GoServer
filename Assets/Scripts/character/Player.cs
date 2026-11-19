@@ -1,24 +1,49 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using static TimeUtility;
 
-public class Player : Character , IDamage
+public class Player : Character ,IDamage,IKnockBack
 {
-    public Action UIEvent;
+    public Action<float,float> UIEvent;
 
     Rigidbody _Rb;
 
     InputControlManager _InputManager;
 
+    Transform _Body;
+
+    [SerializeField]
+    float _knockBackSpeed = 5.0f;
+
+    public float CurrentHp
+    {
+        get => _CurrentHp;
+
+        set
+        {
+            _CurrentHp = Mathf.Clamp(value,0.0f,100.0f);
+
+            UIEvent?.Invoke(_CurrentHp,MaxHp);
+        }
+    }
+    bool _IsBack = false;
+
     protected override void Awake()
     {
-        _Rb = GetComponent<Rigidbody>();
         _InputManager = GetComponent<InputControlManager>();
         _CharaStatus = GetComponent<CharaStatus>();
+        _Body = GameObject.Find("Player").transform.GetChild(0);
+        _Rb = GameObject.Find("Player").GetComponent<Rigidbody>();
     }
 
-    protected override void FixedUpdate()
+    void Start()
     {
+        _CurrentHp = _CharaStatus._MaxHp;
+    }
+    void FixedUpdate()
+    {
+        if (_IsBack) return;
         Move(_InputManager.GetInputVer);
     }
 
@@ -27,11 +52,14 @@ public class Player : Character , IDamage
         //à⁄ìÆ
         var move = CalculateMove(input);
 
-        _Rb.linearVelocity = move;
-
-        if(move != Vector3.zero)
+        if(_Rb != null)
         {
-            transform.rotation = CalculateRotation(input);
+            _Rb.linearVelocity = move;
+        }
+
+        if(move != Vector3.zero&& _Body != null)
+        {
+            _Body.rotation = CalculateRotation(input);
         }
     }
     Vector3 CalculateMove(Vector2 input)
@@ -48,12 +76,37 @@ public class Player : Character , IDamage
         var targetRotation = Quaternion.LookRotation(dir, Vector3.up);
 
         //âÒì]
-        return Quaternion.Slerp(transform.rotation, targetRotation, _CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
+        return Quaternion.Slerp(_Body.rotation, targetRotation, _CharaStatus._RotSpeed * GameTime.FixedDeltaTime);
     }
 
-    public void TakeDamage(int amount)
+    public void KnockBack(Vector3 pos)
     {
-        _CurrentHp -= amount;
-        UIEvent?.Invoke();
+        StartCoroutine(BackCoroutine(pos));
+    }
+
+    IEnumerator BackCoroutine(Vector3 fromPos)
+    {
+        _IsBack = true;
+
+        Debug.Log("É_ÉÅÅ[ÉWÇéÛÇØÇΩ");
+
+        Vector3 dir = transform.position - fromPos;
+
+        dir = dir.normalized;
+
+        dir.y = 1.0f;
+
+        Vector3 force = dir * _knockBackSpeed;
+
+        if(_Rb != null)
+        {
+            _Rb.linearVelocity = Vector3.zero;
+
+            _Rb.AddForce(force, ForceMode.Impulse);
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        _IsBack = false;
     }
 }

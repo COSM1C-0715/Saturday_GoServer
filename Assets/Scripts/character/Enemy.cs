@@ -3,32 +3,53 @@ using System;
 
 public class Enemy : Character,IDamage
 {
-    public Action UIEvent;
+    public Action<float,float> UIEvent;
 
     Rigidbody _Rb;
 
-    Vector3 _MoveDir;
+    const float SERCH_RANGE = 10;
+
+    Transform _Body;
+
+    public float CurrentHp
+    {
+        get => _CurrentHp;
+
+        set
+        {
+            _CurrentHp = Mathf.Clamp(value, 0.0f, 100.0f);
+
+            UIEvent?.Invoke(_CurrentHp, MaxHp);
+        }
+    }
 
     protected override void Awake()
     {
-        _Rb = GetComponent<Rigidbody>();
+        _Rb = GameObject.Find("Enemy").GetComponent<Rigidbody>();
 
         _CharaStatus = GetComponent<CharaStatus>();
-    }
-    protected override void Start()
-    {
-        _MoveDir = new Vector3(0, 0, 1);
-    }
 
-    protected override void FixedUpdate()
+        _Body = transform.GetChild(0);
+    }
+    void Start()
     {
-        var move = _MoveDir * _CharaStatus._Speed * Time.fixedDeltaTime;
+        _CurrentHp = _CharaStatus._MaxHp;
 
-        _Rb.linearVelocity = move;
+        Move();
     }
 
-    public void TakeDamage(int amount)
+    void FixedUpdate()
     {
-        _CurrentHp -= amount;
+        Move();
+    }
+
+    void Move()
+    {
+        Character chara = StaticCharacterMove.SerchTarget<Player>(transform.position,SERCH_RANGE);
+
+        if (chara != null)
+        {
+            _Rb.linearVelocity = StaticCharacterMove.AttackDir(chara.transform.position, _Body, _CharaStatus._Speed);
+        }
     }
 }
