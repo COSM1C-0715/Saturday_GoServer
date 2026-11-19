@@ -7,6 +7,8 @@ public class CharaStatusUIPos : MonoBehaviour
     [SerializeField]
     Vector3 _OffSet = new Vector3(0.0f,2.0f,0.0f);
 
+    public bool IsActive => gameObject.activeSelf;
+
     void Awake()
     {
         rect = GetComponent<RectTransform>();

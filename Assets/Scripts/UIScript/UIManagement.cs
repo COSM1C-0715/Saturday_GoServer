@@ -56,7 +56,7 @@ public class UIManagement : MonoBehaviour
             _UIPos.UISetActive(false);
         }
 
-        if (_Enemy != null)
+        if (_Enemy != null&&_UIPos.IsActive)
         {
             _UIPos.UpdateRectTransform(_Enemy.transform.position);
         }
