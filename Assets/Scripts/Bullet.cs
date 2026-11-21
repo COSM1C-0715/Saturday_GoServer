@@ -1,17 +1,23 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using static TimeUtility;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
+    Coroutine _HideCoroutine = null;
+
     Action<Bullet> _Return;
 
     Rigidbody _Rb;
 
     CharaStatus _Status;
-    
+
     const int DAMAGE = 1;//ãÖÇ™ìñÇΩÇ¡ÇΩëŒè€Ç…â¡Ç¶ÇÈÉ_ÉÅÅ[ÉW
+
+    [SerializeField]
+    float _ActiveTime = 5f;
 
     const float SERCH_RANGE = 10;
     void Awake()
@@ -19,6 +25,11 @@ public class Bullet : MonoBehaviour
         _Rb = GetComponent<Rigidbody>();
 
         _Status = GetComponent<CharaStatus>();
+    }
+
+    void Start()
+    {
+        _HideCoroutine = StartCoroutine(DerayHide());
     }
 
     void FixedUpdate()
@@ -49,9 +60,16 @@ public class Bullet : MonoBehaviour
 
         transform.forward = direction.normalized;
 
-         var move = direction.normalized * _Status._Speed * GameTime.FixedDeltaTime;
+        var move = direction.normalized * _Status._Speed * GameTime.FixedDeltaTime;
 
-         _Rb.linearVelocity = move;
+        _Rb.linearVelocity = move;
+    }
+
+    IEnumerator DerayHide()
+    {
+        yield return new WaitForSeconds(_ActiveTime);
+
+        _Return?.Invoke(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,6 +79,12 @@ public class Bullet : MonoBehaviour
         if (damage != null)
         {
             damage.CurrentHp -= DAMAGE;
+        }
+
+        if(_HideCoroutine != null)
+        {
+            StopCoroutine(_HideCoroutine);
+            _HideCoroutine = null;
         }
 
         _Return?.Invoke(this);

@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-
 public static class PrefabName
 {
     public const string BULLET = "Bullet";
@@ -8,6 +8,11 @@ public static class PrefabName
 
 public class SpawnManagement : MonoBehaviour
 {
+    private List<Enemy> _ActiveEnemies;
+
+    [SerializeField]
+    private LayerMask _PlayerMask;
+
     private Bullet _BulletPrefab;
 
     private Enemy _EnemyPrefab;
@@ -18,9 +23,13 @@ public class SpawnManagement : MonoBehaviour
 
     public GenericSpawnSystem<Bullet> Bullets => _Bullets;
 
-    [SerializeField]
+    [SerializeField,Tooltip("ê∂ê¨Ç≥ÇπÇÈêî")]
     int _SpawnCount = 0;
 
+    [SerializeField]
+    float _CheckRadius = 1.0f;
+
+    private const int TRY_SPAWN_COUNT = 1000;
     void Awake()
     {
         _BulletPrefab = Resources.Load<Bullet>(PrefabName.BULLET);
@@ -31,24 +40,31 @@ public class SpawnManagement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = 0; i < _SpawnCount; i++)
+        AnyOneSpawn();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        AnyOneSpawn();
+    }
+
+    void AnyOneSpawn()
+    {
+        for (int i = 0; i < 5; i++)
         {
             int count = 0;
 
-            float posX = Random.Range(-50, 50);
+            Vector3 initPos = InitPos();
 
-            float posZ = Random.Range(-50, 50);
-
-            Vector3 initPos = new Vector3(posX, 0.0f, posZ);
-
-            while (count < 100 && Physics.CheckSphere(initPos, 5.0f,3))
+            while (count < TRY_SPAWN_COUNT && Physics.CheckSphere(initPos, _CheckRadius, _PlayerMask))
             {
                 count++;
-                posX = Random.Range(-50, 50);
-                posZ = Random.Range(-50, 50);
-
-                initPos = new Vector3(posX, 0.0f, posZ);
+                
+                initPos = InitPos();
             }
+
+            if (Physics.CheckSphere(initPos, _CheckRadius, _PlayerMask)) continue;
 
             Enemy obj = _Enemies.Get();
 
@@ -56,9 +72,12 @@ public class SpawnManagement : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    Vector3 InitPos()
     {
-        
+        float posX = Random.Range(-46, 46);
+
+        float posZ = Random.Range(-46, 46);
+
+        return new Vector3(posX, 1.0f, posZ);
     }
 }

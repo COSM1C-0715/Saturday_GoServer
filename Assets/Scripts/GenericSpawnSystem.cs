@@ -7,6 +7,8 @@ public class GenericSpawnSystem<T> where T : MonoBehaviour
 
     Queue<T> _SpawnObj = new Queue<T>();
 
+    public int ObjNum => _SpawnObj.Count;
+
     public GenericSpawnSystem(T prefab,int spawnNum)
     {
         Debug.Log($"[GenericSpawnSystem] å^: {typeof(T).Name} / Prefab: {prefab} / å¬êî: {spawnNum}");

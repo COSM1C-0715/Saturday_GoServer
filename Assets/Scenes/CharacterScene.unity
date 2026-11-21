@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 83807977}
   - component: {fileID: 83807976}
   - component: {fileID: 83807978}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -759,7 +759,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c518bd421ae75e548aabbb4c7bac5530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManagement
+  _PlayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   _SpawnCount: 5
+  _CheckRadius: 3
 --- !u!1 &708214838
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,6 +1422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 885232e0af8c88c4cbefebe3aa95e48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  _SearchRange: 5
   _knockBackSpeed: 3
 --- !u!1 &1777546251
 GameObject:

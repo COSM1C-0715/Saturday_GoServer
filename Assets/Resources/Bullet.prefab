@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b37d6be654bf44d93c483a88b17d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
+  _ActiveTime: 1
 --- !u!114 &5551009100666247221
 MonoBehaviour:
   m_ObjectHideFlags: 0
