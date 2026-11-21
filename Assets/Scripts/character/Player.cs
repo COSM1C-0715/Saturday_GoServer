@@ -1,32 +1,24 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using static TimeUtility;
 
-public class Player : Character ,IDamage,IKnockBack
+public class Player : Character ,IKnockBack
 {
-    public Action<float,float> UIEvent;
-
     Rigidbody _Rb;
 
     InputControlManager _InputManager;
 
     Transform _Body;
 
+    Character _Chara;
+
+    [SerializeField]
+    float _SearchRange = 5.0f;
+
     [SerializeField]
     float _knockBackSpeed = 5.0f;
 
-    public float CurrentHp
-    {
-        get => _CurrentHp;
-
-        set
-        {
-            _CurrentHp = Mathf.Clamp(value,0.0f,100.0f);
-
-            UIEvent?.Invoke(_CurrentHp,MaxHp);
-        }
-    }
+    public Character Chara => _Chara;
     bool _IsBack = false;
 
     protected override void Awake()
@@ -43,6 +35,8 @@ public class Player : Character ,IDamage,IKnockBack
     }
     void FixedUpdate()
     {
+        _Chara = StaticCharacterMove.SerchTarget<Enemy>(transform.position, _SearchRange);
+
         if (_IsBack) return;
         Move(_InputManager.GetInputVer);
     }

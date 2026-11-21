@@ -12,8 +12,6 @@ public class UIManagement : MonoBehaviour
 
     Player _Player = null;
 
-    Enemy _Enemy = null;
-
     [SerializeField]
     float _Distance = 1.0f;
 
@@ -23,7 +21,6 @@ public class UIManagement : MonoBehaviour
         _Image[1] = GameObject.Find("EnemyStatus").transform.GetChild(1).GetComponent<CharaStatusImage>();
         _Text = GameObject.Find("PlayerStatusUI").transform.GetChild(2).GetComponent<CharaStatusText>();
         _Player = GameObject.Find("Player").transform.GetChild(0).GetComponent<Player>();
-        _Enemy = GameObject.Find("Enemy").GetComponent<Enemy>();
         _UIPos = GameObject.Find("EnemyStatus").GetComponent<CharaStatusUIPos>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,11 +30,7 @@ public class UIManagement : MonoBehaviour
         {
             _Player.UIEvent = UIUpdate<Player>;
         }
-        if(_Enemy != null)
-        {
-            _Enemy.UIEvent = UIUpdate<Enemy>;
-        }
-        if (_Image != null && _Text != null)
+        if (_Image[0] != null && _Text != null)
         {
             UIUpdate<Player>(_Player.CurrentHp,_Player.MaxHp);
         }
@@ -45,20 +38,15 @@ public class UIManagement : MonoBehaviour
 
     void FixedUpdate()
     {
-        float distance = (_Player.transform.position - _Enemy.transform.position).sqrMagnitude;
-
-        if(distance < _Distance * _Distance)
+        if(_Player.Chara != null)
         {
             _UIPos.UISetActive(true);
+            _UIPos.UpdateRectTransform(_Player.Chara.transform.position);
+            UIUpdate<Enemy>(_Player.Chara.CurrentHp,_Player.Chara.MaxHp);
         }
         else
         {
             _UIPos.UISetActive(false);
-        }
-
-        if (_Enemy != null&&_UIPos.IsActive)
-        {
-            _UIPos.UpdateRectTransform(_Enemy.transform.position);
         }
     }
     /// <summary>

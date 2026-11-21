@@ -1,11 +1,26 @@
+using System;
 using UnityEngine;
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour,IDamage
 {
+    public Action <float,float> UIEvent;
+
     protected CharaStatus _CharaStatus;
 
     protected float _CurrentHp;
 
     protected const int DAMAGE = 10;
+
+    public float CurrentHp
+    {
+        get => _CurrentHp;
+
+        set
+        {
+            _CurrentHp = Mathf.Clamp(value, 0.0f, 100.0f);
+
+            UIEvent?.Invoke(_CurrentHp, MaxHp);
+        }
+    }
 
     public float MaxHp => _CharaStatus._MaxHp;
 

@@ -26,7 +26,7 @@ public class SpawnManagement : MonoBehaviour
         _BulletPrefab = Resources.Load<Bullet>(PrefabName.BULLET);
         _EnemyPrefab = Resources.Load<Enemy>(PrefabName.ENEMY);
         _Bullets = new GenericSpawnSystem<Bullet> (_BulletPrefab,_SpawnCount);
-        _Enemies = new GenericSpawnSystem<Enemy> (_EnemyPrefab,_SpawnCount);
+        _Enemies = new GenericSpawnSystem<Enemy>(_EnemyPrefab, _SpawnCount);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,11 +41,11 @@ public class SpawnManagement : MonoBehaviour
 
             Vector3 initPos = new Vector3(posX, 0.0f, posZ);
 
-            while (count < 100 || Physics.CheckSphere(initPos, 5.0f,3))
+            while (count < 100 && Physics.CheckSphere(initPos, 5.0f,3))
             {
                 count++;
                 posX = Random.Range(-50, 50);
-                posX = Random.Range(-50, 50);
+                posZ = Random.Range(-50, 50);
 
                 initPos = new Vector3(posX, 0.0f, posZ);
             }

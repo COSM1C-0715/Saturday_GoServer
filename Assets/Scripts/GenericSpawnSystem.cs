@@ -9,6 +9,7 @@ public class GenericSpawnSystem<T> where T : MonoBehaviour
 
     public GenericSpawnSystem(T prefab,int spawnNum)
     {
+        Debug.Log($"[GenericSpawnSystem] Œ^: {typeof(T).Name} / Prefab: {prefab} / ŒÂ”: {spawnNum}");
         _Prefab = prefab;
 
         for(int i = 0;i < spawnNum;i++)
