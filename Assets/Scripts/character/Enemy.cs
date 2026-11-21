@@ -4,9 +4,9 @@ public class Enemy : Character
 {
     Rigidbody _Rb;
 
-    const float SERCH_RANGE = 10;
-
     Transform _Body;
+
+    const float SERCH_RANGE = 10;
 
     protected override void Awake()
     {
@@ -35,6 +35,28 @@ public class Enemy : Character
         if (chara != null)
         {
             _Rb.linearVelocity = StaticCharacterMove.AttackDir(chara.transform.position, _Body, _CharaStatus._Speed);
+        }
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        IDamage damage = other.GetComponent<IDamage>();
+
+        IKnockBack knockBack = other.GetComponent<IKnockBack>();
+
+        if (damage != null)
+        {
+            damage.CurrentHp -= DAMAGE;
+        }
+
+        if (knockBack != null)
+        {
+            knockBack.KnockBack(transform.position);
+        }
+
+        if(_CurrentHp <=0)
+        {
+            _Return?.Invoke(this);
         }
     }
 }

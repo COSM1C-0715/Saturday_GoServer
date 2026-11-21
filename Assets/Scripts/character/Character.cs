@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 public class Character : MonoBehaviour,IDamage
 {
+    public Action<Enemy> _Return;
+
     public Action <float,float> UIEvent;
 
     protected CharaStatus _CharaStatus;
@@ -29,7 +31,7 @@ public class Character : MonoBehaviour,IDamage
         _CharaStatus = GetComponent<CharaStatus>();
     }
 
-    protected void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         IDamage damage = other.GetComponent<IDamage>();
 

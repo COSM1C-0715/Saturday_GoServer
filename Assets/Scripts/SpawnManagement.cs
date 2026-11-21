@@ -8,8 +8,6 @@ public static class PrefabName
 
 public class SpawnManagement : MonoBehaviour
 {
-    private List<Enemy> _ActiveEnemies;
-
     [SerializeField]
     private LayerMask _PlayerMask;
 
@@ -25,6 +23,8 @@ public class SpawnManagement : MonoBehaviour
 
     [SerializeField,Tooltip("ê∂ê¨Ç≥ÇπÇÈêî")]
     int _SpawnCount = 0;
+
+    private int _ActiveEnemyNum = 0;
 
     [SerializeField]
     float _CheckRadius = 1.0f;
@@ -51,7 +51,13 @@ public class SpawnManagement : MonoBehaviour
 
     void AnyOneSpawn()
     {
-        for (int i = 0; i < 5; i++)
+        int subSpawnCount  = _Enemies.ObjNum - _ActiveEnemyNum;
+
+        if (subSpawnCount <= 0) return;
+
+        _ActiveEnemyNum = 0;
+
+        for (int i = 0; i < subSpawnCount; i++)
         {
             int count = 0;
 
@@ -69,6 +75,10 @@ public class SpawnManagement : MonoBehaviour
             Enemy obj = _Enemies.Get();
 
             obj.transform.position = initPos;
+
+            obj._Return = _Enemies.Return;
+
+            _ActiveEnemyNum++;
         }
     }
 
